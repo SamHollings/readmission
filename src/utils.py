@@ -1,5 +1,8 @@
 """Functions for working with ICD9 codes"""
 
+import pandas as pd
+import ast
+
 def categorise_icd9(code: str) -> str:
 
     lookup = [{"mask":"","start":"001", "end":"139", "desc": "infectious and parasitic diseases"},
@@ -20,11 +23,12 @@ def categorise_icd9(code: str) -> str:
     {"mask":"","start":"780", "end":"799", "desc": "symptoms, signs, and ill-defined conditions"},
     {"mask":"","start":"800", "end":"999", "desc": "injury and poisoning"}]
 
-    if code[0] in ["E","V"]:
+    if str(code)[0] in ["E","V"]:
         return "external causes of injury and supplemental classification" 
     else:
+        code_3char = int(str(code)[0:3])
         for i in lookup:
-            if code >= i["start"] and code <= i["end"]:
+            if  code_3char >= int(i["start"]) and code_3char <= int(i["end"]):
                 return i["desc"]
 
 
@@ -90,3 +94,30 @@ def charlson_comorb_index(diag_list: list, age_interval: pd.Interval) -> int:
     age_factor = charlson_factor_age(age_interval)
 
     return charlson_factor_sum + age_factor
+
+
+def surgical_specialty(specialty):
+    """Determine if a specialty is surgical or not"""
+
+    surgical_specialties = [
+                            "Surgery-Neuro",
+                            "Surgery-Cardiovascular/Thoracic",
+                            "Emergency/Trauma",
+                            "Orthopedics",
+                            "Surgery-General",
+                            "Orthopedics-Reconstructive",
+                            "Surgery-Pediatric",
+                            "Otolaryngology",
+                            "Surgery-Vascular",
+                            "Urology",
+                            "Surgery-Cardiovascular",
+                            "Surgery-Thoracic",
+                            "Surgery-Plastic",
+                            "Surgery-Colon&Rectal",
+                            "Surgery-PlasticwithinHeadandNeck",
+                            "Obstetrics",
+                            ]
+    if specialty in surgical_specialties:
+        return True
+    else:
+        return False
