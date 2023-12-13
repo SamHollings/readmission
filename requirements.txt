@@ -4,3 +4,6 @@ jupyter
 scikit-learn
 openpyxl
 pytest
+xgboost
+shap
+lime
