@@ -25,6 +25,8 @@ def categorise_icd9(code: str) -> str:
 
     if str(code)[0] in ["E","V"]:
         return "external causes of injury and supplemental classification" 
+    elif str(code) == "?":
+        return "unknown"
     else:
         code_3char = int(str(code)[0:3])
         for i in lookup:

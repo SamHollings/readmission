@@ -7,3 +7,4 @@ pytest
 xgboost
 shap
 lime
+statsmodels
